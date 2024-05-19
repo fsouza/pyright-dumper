@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"unicode"
 )
 
 func main() {
@@ -50,7 +51,7 @@ func consume(r io.Reader, outputFile string, verbose bool) error {
 	var lines []string
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
+		line := strings.TrimRightFunc(scanner.Text(), unicode.IsSpace)
 		if verbose {
 			log.Print(line)
 		}
