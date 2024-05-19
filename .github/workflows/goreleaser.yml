@@ -28,4 +28,4 @@ jobs:
         with:
           distribution: goreleaser
           version: latest
-          args: release -f ci/.goreleaser.yml
+          args: release -f .goreleaser.yml
