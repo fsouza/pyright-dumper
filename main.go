@@ -14,6 +14,7 @@ import (
 
 func main() {
 	output := flag.String("output", "", "output path")
+	verbose := flag.Bool("verbose", false, "verbose output")
 	flag.Parse()
 
 	if *output == "" {
@@ -37,19 +38,22 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = consume(out, *output)
+	err = consume(out, *output, *verbose)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func consume(r io.Reader, outputFile string) error {
+func consume(r io.Reader, outputFile string, verbose bool) error {
 	const marker = "Watching for file changes..."
 
 	var lines []string
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
+		if verbose {
+			log.Print(line)
+		}
 		lines = append(lines, line)
 		if line == marker {
 			err := write(lines, outputFile)
